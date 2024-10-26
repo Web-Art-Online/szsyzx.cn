@@ -11,10 +11,12 @@
     --phi-box-shadow: 5px 5px 5px #0004;
     --luotianyi: #66ccff;
     --luotianyi-highlight: #99ffff;
+    --skew: skew(18.43494882292201deg); /* tan-1(1/3) */
+    --skew-n: skew(-18.43494882292201deg);
 }
 
 html {
-    width: 100vw;
+    max-width: 100vw;
     overflow-x: hidden;
     scrollbar-width: thin;
     font-family: 'ZCOOL KuaiLe', 'HarmonyOS Sans SC', 'Unifont', 'JetBrains Mono', monospace, sans-serif, serif;
@@ -48,36 +50,36 @@ nav#home-nav-container {
     right: 0;
     display: flex;
     justify-content: space-between;
-    height: 48px;
-    overflow-x: hidden;
-    z-index: 1;
+    overflow: hidden;
+    height: 64px;
 }
 
 #home-nav-container > * {
-    height: 100%;
-    width: fit-content;
+    height: 48px;
     line-height: 100%;
-    background-color: var(--phi-bg-black);
     color: var(--phi-text-white);
     display: flex;
     align-items: center;
     margin: 0;
+    position: relative;
 }
 
-#home-nav-left {
-    padding-right: 16px;
-    clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
-}
-
-#home-nav-right {
-    padding-left: 16px;
-    clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%);
+#home-nav-container > *::after {
+    content: "";
+    background-color: var(--phi-bg-black);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow: var(--phi-box-shadow);
+    padding: 0 8px;
+    transform: translateX(-8px) var(--skew-n);
 }
 
 #home-nav-container > * > * {
     margin: 0 8px;
     display: block;
     white-space: nowrap;
+    z-index: 1;
 }
 
 #home-nav-container a {
@@ -211,5 +213,6 @@ footer > *:last-child::after {
     height: 8px;
     margin: 8px;
     background-color: var(--phi-text-white);
-    transform: skew(-18.43494882292201deg); /* tan-1(1/3) */
+    transform: var(--skew-n);
+    box-shadow: var(--phi-box-shadow);
 }
