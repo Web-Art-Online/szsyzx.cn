@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "tsc": "tsc -w",
-    "server": "python3 -m http.server"
+    "server": "python3 -m http.server",
+    "build": "tsc && rm -rf dist/* && mkdir -p dist/scripts && cp *.html dist && cp scripts/*.js dist/scripts && cp -r styles dist"
   }
 }
