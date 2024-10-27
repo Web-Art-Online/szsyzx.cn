@@ -77,7 +77,6 @@ nav#home-nav-container {
 
 #home-nav-container > * > * {
     margin: 0 8px;
-    display: block;
     white-space: nowrap;
     z-index: 1;
 }
@@ -114,6 +113,7 @@ footer {
     align-items: center;
     flex-wrap: wrap;
     z-index: 1;
+    box-shadow: var(--phi-box-shadow);
 }
 
 footer > a {
