@@ -1,3 +1,69 @@
+const showswitchto = (showcontainer: HTMLDivElement, targetgpid: number) => {
+    const pagepicker = showcontainer.querySelector(".page-picker");
+    const pageshower = showcontainer.querySelector(".page-shower");
+    if (!pagepicker || !pageshower) {
+        return; // not valid showcontainer
+    }
+    const maxgpid = pageshower.childElementCount - 1;
+    let currentgpid = NaN; // NaN by default
+    // pagepicker
+    for (const picker of pagepicker.children) {
+        const pickergpid = parseInt(picker.getAttribute("gpid") || "0");
+        if (picker.className === "page-picker-this") {
+            currentgpid = pickergpid;
+            if (currentgpid === targetgpid) {
+                return; // start and end are same
+            }
+        }
+        picker.className = pickergpid === targetgpid ? "page-picker-this" : "page-picker-hide";
+    }
+    // pageshower
+    let direction = "up"; // 'up' in most cases
+    for (const page of pageshower.children) {
+        const pagegpid = parseInt(page.getAttribute("gpid") || "0");
+        if (targetgpid !== pagegpid && currentgpid !== pagegpid) {
+            page.className = "page-shower-hide";
+            continue;
+        }
+        // set className with min abs dis
+        const dis = currentgpid - pagegpid;
+        if (dis < 0) {
+            if (dis * -2 < maxgpid + 1) {
+                // up
+                page.className = "page-shower-last";
+                direction = "up";
+            } else {
+                // down
+                page.className = "page-shower-next";
+                direction = "down";
+            }
+        } else if (dis > 0) {
+            if (dis * 2 < maxgpid + 1) {
+                // down
+                page.className = "page-shower-next";
+                direction ="down";
+            } else {
+                // up
+                page.className = "page-shower-last";
+                direction = "up";
+            }
+        } else {
+            // itself
+            page.className = "page-shower-this";
+        }
+    }
+    // transition
+    for (const page of pageshower.children) {
+        if (page.className === "page-shower-this") {
+            page.className = direction === "up" ? "page-shower-last" : "page-shower-next";
+        } else if (page.className === "page-shower-next") {
+            page.className = "page-shower-this";
+        } else if (page.className === "page-shower-last") {
+            page.className = "page-shower-this";
+        }
+    }
+}
+
 const loadhomeshow = (homeshowcontainer: HTMLDivElement) => {
     const pagepicker = homeshowcontainer.querySelector(".page-picker");
     const pageshower = homeshowcontainer.querySelector(".page-shower");
@@ -11,28 +77,7 @@ const loadhomeshow = (homeshowcontainer: HTMLDivElement) => {
         }
         pagepicker.addEventListener("click", (e) => {
             if (e.target instanceof HTMLDivElement && e.target.parentElement === pagepicker) {
-                const targetgpid = parseInt(e.target.getAttribute("gpid") || "0");
-                // shower
-                for (const page of pageshower.children) {
-                    const pagegpid = parseInt(page.getAttribute("gpid") || "0");
-                    if (pagegpid === targetgpid) {
-                        page.className = "page-shower-this";
-                    } else if (pagegpid === (targetgpid + 1 > maxgpid ? 0 : targetgpid + 1)) {
-                        page.className = "page-shower-next";
-                    } else if (pagegpid === (targetgpid - 1 < 0 ? maxgpid : targetgpid - 1)) {
-                        page.className = "page-shower-last";
-                    } else {
-                        page.className = "page-shower-hide";
-                    }
-                }
-                // picker
-                for (const picker of pagepicker.children) {
-                    if (picker.getAttribute("gpid") === targetgpid.toString()) {
-                        picker.className = "page-picker-this";
-                    } else {
-                        picker.className = "page-picker-hide";
-                    }
-                }
+                showswitchto(homeshowcontainer, parseInt(e.target.getAttribute("gpid") || "0"));
             }
         });
     }
