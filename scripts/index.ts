@@ -18,7 +18,7 @@ const showswitchto = (showcontainer: HTMLDivElement, targetgpid: number) => {
         picker.className = pickergpid === targetgpid ? "page-picker-this" : "page-picker-hide";
     }
     // pageshower
-    let direction = "up"; // 'up' in most cases
+    let isup = true; // 'up' in most cases
     for (const page of pageshower.children) {
         const pagegpid = parseInt(page.getAttribute("gpid") || "0");
         if (targetgpid !== pagegpid && currentgpid !== pagegpid) {
@@ -31,21 +31,21 @@ const showswitchto = (showcontainer: HTMLDivElement, targetgpid: number) => {
             if (dis * -2 < maxgpid + 1) {
                 // up
                 page.className = "page-shower-last";
-                direction = "up";
+                isup = true;
             } else {
                 // down
                 page.className = "page-shower-next";
-                direction = "down";
+                isup = false;
             }
         } else if (dis > 0) {
             if (dis * 2 < maxgpid + 1) {
                 // down
                 page.className = "page-shower-next";
-                direction ="down";
+                isup = false;
             } else {
                 // up
                 page.className = "page-shower-last";
-                direction = "up";
+                isup = true;
             }
         } else {
             // itself
@@ -55,11 +55,13 @@ const showswitchto = (showcontainer: HTMLDivElement, targetgpid: number) => {
     // transition
     for (const page of pageshower.children) {
         if (page.className === "page-shower-this") {
-            page.className = direction === "up" ? "page-shower-last" : "page-shower-next";
+            page.className = isup ? "page-shower-last" : "page-shower-next";
         } else if (page.className === "page-shower-next") {
             page.className = "page-shower-this";
         } else if (page.className === "page-shower-last") {
             page.className = "page-shower-this";
+        } else {
+            page.className = "page-shower-hide";
         }
     }
 }

@@ -165,7 +165,9 @@ footer > *:last-child::after {
     height: 100%;
     position: absolute;
     z-index: -1;
-    transition: height 400ms ease-in-out;
+    transition-property: height, transform;
+    transition-duration: 400ms;
+    transition-timing-function: ease-in-out;
     top: 0;
     left: 0;
     right: 0;
@@ -193,6 +195,7 @@ footer > *:last-child::after {
 
 .page-shower-last {
     height: 0;
+    transform: translateY(-40px);
     z-index: 0;
 }
 
@@ -233,4 +236,9 @@ footer > *:last-child::after {
     background-color: var(--phi-text-white);
     transform: var(--skew-n);
     box-shadow: var(--phi-box-shadow);
+    transition: transform 200ms ease-in-out;
+}
+
+.page-picker-this {
+    transform: var(--skew-n) scale(1.2);
 }
