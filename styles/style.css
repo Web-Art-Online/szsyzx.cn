@@ -166,7 +166,7 @@ footer > *:last-child::after {
     position: absolute;
     z-index: -1;
     transition-property: height, transform;
-    transition-duration: 400ms;
+    transition-duration: 500ms;
     transition-timing-function: ease-in-out;
     top: 0;
     left: 0;
@@ -190,12 +190,13 @@ footer > *:last-child::after {
 }
 
 .page-shower-next {
+    transform: translateY(60px);
     z-index: -2;
 }
 
 .page-shower-last {
-    height: 0;
-    transform: translateY(-40px);
+    height: 60px;
+    transform: translateY(-60px);
     z-index: 0;
 }
 
