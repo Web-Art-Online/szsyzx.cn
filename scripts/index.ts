@@ -60,8 +60,8 @@ function listenTouchY(elem: HTMLElement, cb: (diffY: number) => void) {
         startY = e.touches[0].clientY;
     });
     elem.addEventListener('touchmove', (e) => {
-        const diffY = startY - e.touches[0].clientY;
-        cb(diffY);
+        cb(startY - e.touches[0].clientY);
+        startY = e.touches[0].clientY;
         e.preventDefault();
     });
 }
@@ -85,31 +85,19 @@ function loadhomeshow(homeshowcontainer: HTMLDivElement) {
             isswitching = false;
         }
     });
-    const onscrolllike = async (direction: boolean) => {
+    const onscrolllike = async (deltaY: number) => {
         if (isswitching) return;
         const curr = parseInt(pagepicker.querySelector(".page-picker-this")?.getAttribute("gpid") || "NaN");
         isswitching = true;
-        if (direction) {
+        if (deltaY > 5) {
             await showswitchto(homeshowcontainer, curr + 1);
-        } else {
+        } else if (deltaY < -5 {
             await showswitchto(homeshowcontainer, curr - 1);
         }
         isswitching = false;
     };
-    homeshowcontainer.addEventListener("wheel", (e) => {
-        if (e.deltaY > 5) {
-            onscrolllike(true);
-        } else if (e.deltaY < -5) {
-            onscrolllike(false);
-        }
-    });
-    listenTouchY(homeshowcontainer, (diffY) => {
-        if (diffY > 20) {
-            onscrolllike(true);
-        } else if (diffY < -20) {
-            onscrolllike(false);
-        }
-    });
+    homeshowcontainer.addEventListener("wheel", (e) => onscrolllike(e.deltaY));
+    listenTouchY(homeshowcontainer, onscrolllike);
 }
 
 function setshowimgwh() {
