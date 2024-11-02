@@ -166,7 +166,7 @@ footer > *:last-child::after {
     position: absolute;
     z-index: -1;
     transition-property: height, transform;
-    transition-duration: 500ms;
+    transition-duration: 400ms;
     transition-timing-function: ease-in-out;
     top: 0;
     left: 0;
