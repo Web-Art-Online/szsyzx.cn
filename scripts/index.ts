@@ -91,7 +91,7 @@ function loadhomeshow(homeshowcontainer: HTMLDivElement) {
         isswitching = true;
         if (deltaY > 5) {
             await showswitchto(homeshowcontainer, curr + 1);
-        } else if (deltaY < -5 {
+        } else if (deltaY < -5) {
             await showswitchto(homeshowcontainer, curr - 1);
         }
         isswitching = false;
