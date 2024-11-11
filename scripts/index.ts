@@ -1,38 +1,124 @@
-function upordown(curr: number, target: number, max: number): boolean {
-    const dis = curr - target;
-    return dis < 0 ? (dis * -2 < max) : (dis * 2 > max);
-}
+/*
+* MIT License
+* (c) 2024 Web-Art-Online
+*/
 
-function updateClassName(elem: Element, target: number, curr: number, next: number, last: number) {
-    const gpid = parseInt(elem.getAttribute("gpid") || "NaN");
-    if (gpid === target) {
-        elem.className = "page-shower-this";
-    } else if (gpid === next) {
-        elem.className = "page-shower-next";
-    } else if (gpid === last) {
-        elem.className = "page-shower-last";
-    } else {
-        elem.className = "page-shower-hide";
+class PageShowPlayer {
+
+    showcontainer: HTMLDivElement;
+    pagepicker: HTMLDivElement;
+    pageshower: HTMLDivElement;
+
+    curr: number = 0;
+    max: number = 0;
+    isswitching: boolean = false;
+
+    constructor(showcontainer: HTMLDivElement) {
+        this.showcontainer = showcontainer;
+        const pp = this.showcontainer.querySelector("div.page-picker");
+        if (!(pp instanceof HTMLDivElement)) {
+            this.pagepicker = document.createElement("div");
+            this.pagepicker.className = "page-picker";
+            this,showcontainer.append(this.pagepicker);
+        } else {
+            this.pagepicker = pp;
+            this.pagepicker.innerHTML = "";
+        }
+        const ps = this.showcontainer.querySelector("div.page-shower");
+        if (!(ps instanceof HTMLDivElement)) {
+            throw new Error("No div.page-shower found here");
+        } else {
+            this.pageshower = ps;
+        }
+        for (const page of this.pageshower.children) {
+            const gpid = parseInt(page.getAttribute("gpid") || "NaN");
+            if (gpid > this.max) this.max = gpid;
+            const pk = document.createElement("div");
+            pk.setAttribute("gpid", gpid.toString());
+            this.pagepicker.append(pk);
+        }
+        this.updatePageClassName();
+        this.showcontainer.addEventListener("wheel", (e) => this.scrollLikeHandler(e.deltaY));
+        touchSwipeListener(this.showcontainer, (y) => this.scrollLikeHandler(y));
+        this.pagepicker.addEventListener("click", (e) => this.pickerClickHandler(e));
     }
-}
 
-function showsetthis(showcontainer: HTMLDivElement, target: number) {
-    const pagepicker = showcontainer.querySelector(".page-picker");
-    const pageshower = showcontainer.querySelector(".page-shower");
-    if (!pagepicker || !pageshower) return;
-    const max = pageshower.childElementCount - 1;
-    const next = target < max ? target + 1 : 0;
-    const last = target === 0 ? max : target - 1;
-    for (const picker of pagepicker.children) {
-        picker.className = picker.getAttribute("gpid") === target.toString() ? "page-picker-this" : "page-picker-hide";
+    async updatePageClassName() {
+        for (const page of this.pageshower.children) {
+            const gpid = parseInt(page.getAttribute("gpid") || "NaN");
+            if (gpid === this.curr) {
+                page.className = "page-shower-this";
+            } else if (gpid === (this.curr === this.max ? 0 : this.curr + 1)) {
+                page.className = "page-shower-next";
+            } else if (gpid === (this.curr === 0 ? this.max : this.curr - 1)) {
+                page.className = "page-shower-last";
+            } else {
+                page.className = "page-shower-hide";
+            }
+        }
+        for (const picker of this.pagepicker.children) {
+            picker.className = parseInt(picker.getAttribute("gpid") || "NaN") === this.curr ? "page-picker-this" : "page-picker-hide";
+        }
+        await waitTransitionEnd(this.showcontainer);
     }
-    for (const page of pageshower.children) {
-        updateClassName(page, target, target, next, last);
-    };
+
+    async nextPage() {
+        this.curr = this.curr === this.max ? 0 : this.curr + 1;
+        await this.updatePageClassName();
+    }
+
+    async lastPage() {
+        this.curr = this.curr === 0 ? this.max : this.curr - 1;
+        await this.updatePageClassName();
+    }
+
+    async switchTo(target: number) {
+        if (target > this.max) {
+            target = 0;
+        } else if (Number.isNaN(target)) {
+            return;
+        }
+        while (target !== this.curr) {
+            if (this.upordown(target)) {
+                await this.nextPage();
+            } else {
+                await this.lastPage();
+            }
+        }
+    }
+
+    upordown(target: number) {
+        const dis = this.curr - target;
+        if (dis < 0) {
+            return (dis * -2) < (this.max + 1);
+        } else {
+            return (dis * 2) > (this.max + 1);
+        }
+    }
+
+    async scrollLikeHandler(deltaY: number) {
+        if (this.isswitching) return;
+        this.isswitching = true;
+        if (deltaY > 5) {
+            await this.nextPage();
+        } else if (deltaY < -5) {
+            await this.lastPage();
+        }
+        this.isswitching = false;
+    }
+
+    async pickerClickHandler(e: MouseEvent) {
+        if (e.target instanceof HTMLDivElement && e.target.parentElement === this.pagepicker && !this.isswitching) {
+            this.isswitching = true;
+            await this.switchTo(parseInt(e.target.getAttribute("gpid") || "NaN"));
+            this.isswitching = false;
+        }
+    }
+
 }
 
-async function waitForTransition(elem: HTMLElement) {
-    await new Promise<void>((resolve) => {
+async function waitTransitionEnd(elem: HTMLElement) {
+    return await new Promise<void>((resolve) => {
         const fn = () => {
             elem.removeEventListener("transitionend", fn);
             resolve();
@@ -41,88 +127,47 @@ async function waitForTransition(elem: HTMLElement) {
     });
 }
 
-async function showswitchto(showcontainer: HTMLDivElement, target: number) {
-    const ashower = showcontainer.querySelector(".page-shower-this");
-    if (!ashower || !ashower.parentElement) return;
-    let curr = parseInt(ashower.getAttribute("gpid") || "NaN");
-    const max = ashower.parentElement.childElementCount - 1;
-    if (target < 0) target = max;
-    if (target > max) target = 0;
-    while (curr !== target) {
-        showsetthis(showcontainer, upordown(curr, target, max + 1) ? (++curr > max ? (curr = 0) : curr) : (--curr < 0 ? (curr = max) : curr));
-        await waitForTransition(ashower.parentElement);
-    }
-}
-
-function listenTouchY(elem: HTMLElement, cb: (diffY: number) => void) {
-    let startY: number;
-    elem.addEventListener('touchstart', (e) => {
+function touchSwipeListener(elem: HTMLElement, cb: (deltaY: number) => void) {
+    let startY = 0;
+    elem.addEventListener("touchstart", (e) => {
         startY = e.touches[0].clientY;
     });
-    elem.addEventListener('touchmove', (e) => {
+    elem.addEventListener("touchmove", (e) => {
         cb(startY - e.touches[0].clientY);
         startY = e.touches[0].clientY;
         e.preventDefault();
     });
 }
 
-function loadhomeshow(homeshowcontainer: HTMLDivElement) {
-    const pagepicker = homeshowcontainer.querySelector(".page-picker");
-    const pageshower = homeshowcontainer.querySelector(".page-shower");
-    if (!pagepicker || !pageshower) return;
-
-    for (const page of pageshower.children) {
-        const picker = document.createElement("div");
-        picker.className = page.classList.contains("page-shower-this") ? "page-picker-this" : "page-picker-hide";
-        picker.setAttribute("gpid", page.getAttribute("gpid") || "");
-        pagepicker.appendChild(picker);
-    }
-    let isswitching = false;
-    pagepicker.addEventListener("click", async (e) => {
-        if (e.target instanceof HTMLDivElement && e.target.parentElement === pagepicker && !isswitching) {
-            isswitching = true;
-            await showswitchto(homeshowcontainer, parseInt(e.target.getAttribute("gpid") || "0"));
-            isswitching = false;
-        }
-    });
-    const onscrolllike = async (deltaY: number) => {
-        if (isswitching) return;
-        const curr = parseInt(pagepicker.querySelector(".page-picker-this")?.getAttribute("gpid") || "NaN");
-        isswitching = true;
-        if (deltaY > 5) {
-            await showswitchto(homeshowcontainer, curr + 1);
-        } else if (deltaY < -5) {
-            await showswitchto(homeshowcontainer, curr - 1);
-        }
-        isswitching = false;
+function extraStyles() {
+    const style = document.createElement("style");
+    document.head.append(style);
+    const fn = () => {
+        style.innerHTML = `
+            #home-full-show-container > .page-shower > * > * {
+                height: ${window.innerHeight}px;
+            }
+        `.replace(/\s+/g, " ");
     };
-    homeshowcontainer.addEventListener("wheel", (e) => onscrolllike(e.deltaY));
-    listenTouchY(homeshowcontainer, onscrolllike);
-}
-
-function setshowimgwh() {
-    let style = document.querySelector("head>style#showimgwh");
-    if (!style) {
-        style = document.createElement("style");
-        style.id = "showimgwh";
-        document.querySelector("head")?.append(style);
-    }
-    if (style instanceof HTMLStyleElement) {
-        if (window.innerHeight > window.innerWidth) {
-            style.innerHTML = `#home-full-show-container>.page-shower>*>img{height:${window.innerHeight}px;}`;
-        } else {
-            style.innerHTML = "";
-        }
-    }
+    window.addEventListener("resize", fn);
+    fn();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    // homeshow
-    const homeshowcontainer = document.getElementById("home-full-show-container");
+    // extra styles
+    extraStyles();
+    // home show
+    const homeshowcontainer = document.querySelector("div#home-full-show-container");
     if (homeshowcontainer instanceof HTMLDivElement) {
-        loadhomeshow(homeshowcontainer);
+        const psp = new PageShowPlayer(homeshowcontainer);
+        /*(async () => {
+            while (true) {
+                await new Promise((resolve) => window.setTimeout(resolve, 6e3));
+                if (psp.isswitching) continue;
+                psp.isswitching = true;
+                psp.nextPage();
+                psp.isswitching = false;
+            }
+        })();*/
     }
-    // extra style
-    window.addEventListener("resize", setshowimgwh);
-    setshowimgwh();
 });
