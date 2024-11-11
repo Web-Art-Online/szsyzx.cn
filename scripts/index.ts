@@ -160,7 +160,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const homeshowcontainer = document.querySelector("div#home-full-show-container");
     if (homeshowcontainer instanceof HTMLDivElement) {
         const psp = new PageShowPlayer(homeshowcontainer);
-        /*(async () => {
+        (async () => {
             while (true) {
                 await new Promise((resolve) => window.setTimeout(resolve, 6e3));
                 if (psp.isswitching) continue;
@@ -168,6 +168,6 @@ window.addEventListener("DOMContentLoaded", () => {
                 psp.nextPage();
                 psp.isswitching = false;
             }
-        })();*/
+        })();
     }
 });
