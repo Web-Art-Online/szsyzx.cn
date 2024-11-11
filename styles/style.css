@@ -91,7 +91,7 @@ nav#home-nav-container {
     color: var(--luotianyi);
 }
 
-@media (max-width: 360px) {
+@media (max-width: 420px) {
     #home-nav-container h1 {
         display: none;
     }
