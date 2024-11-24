@@ -27,10 +27,18 @@ html {
 a {
     text-decoration: none;
     color: var(--luotianyi);
+    background-image: linear-gradient(to right, var(--luotianyi), var(--luotianyi-highlight));
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+    background-position-x: right;
+    background-position-y: bottom;
+    transition: background-size 167ms linear;
 }
 
 a:hover {
     color: var(--luotianyi-highlight);
+    background-size: 100% 1px;
+    background-position-x: left;
 }
 
 code {
@@ -95,10 +103,13 @@ nav#home-nav-container > #home-nav-right {
 #home-nav-container a {
     text-decoration: none;
     color: inherit;
+    background-size: 0 2px;
+    padding: 16px 0 16px 0;
 }
 
 #home-nav-container a:hover {
     color: var(--luotianyi);
+    background-size: 100% 2px;
 }
 
 @media (max-width: 494px) {
@@ -261,4 +272,26 @@ footer > *:last-child::after {
 
 .page-picker-this {
     transform: var(--skew-n) scale(1.2);
+}
+
+span#syzx-30-anniversary {
+    font-size: 64px;
+    font-weight: bold;
+    animation: syzx-30-anniversary-animation 5000ms cubic-bezier(0.68, 0, 0.27, 1) 100ms infinite;
+    white-space: nowrap;
+}
+
+@keyframes syzx-30-anniversary-animation {
+    0% {
+        letter-spacing: -48px;
+        filter: blur(4px) contrast(10);
+    }
+    50% {
+        letter-spacing: 64px;
+        filter: blur(1px) contrast(10);
+    }
+    100% {
+        letter-spacing: -48px;
+        filter: blur(4px) contrast(10);
+    }
 }
