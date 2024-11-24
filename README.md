@@ -1,7 +1,28 @@
 # Web Art Online - Homepage on GitHub
 
-- Use the following link to access the website: <https://web-art-online.github.io/>
+## Demo
 
-- Main technologies may be used: HTML, CSS, JavaScript/TypeScript (ES6), AJAX
+- Development: <https://web-art-online.github.io/>
+
+- Production: <https://szsyzx.cn/>
+
+## Technologies
+
+- HTML, CSS, TypeScript
+
+## Build
+
+```shell
+# clone
+git clone https://github.com/Web-Art-Online/web-art-online.github.io.git
+# cd to repo
+cd web-art-online.github.io
+# build
+yarn && yarn build
+# check output
+ls -al dist
+```
+
+## License
 
 - MIT Licensed
