@@ -5,12 +5,12 @@
 
 class PageShowPlayer {
 
-    showcontainer: HTMLDivElement;
-    pagepicker: HTMLDivElement;
-    pageshower: HTMLDivElement;
+    private showcontainer: HTMLDivElement;
+    private pagepicker: HTMLDivElement;
+    private pageshower: HTMLDivElement;
 
-    curr: number = 0;
-    max: number = 0;
+    private curr: number = 0;
+    private max: number = 0;
     isswitching: boolean = false;
 
     constructor(showcontainer: HTMLDivElement) {
@@ -59,17 +59,23 @@ class PageShowPlayer {
         for (const picker of this.pagepicker.children) {
             picker.className = parseInt(picker.getAttribute("gpid") || "NaN") === this.curr ? "page-picker-this" : "page-picker-hide";
         }
-        await waitTransitionEnd(this.showcontainer);
+        await waitTransitionEnd(this.pageshower);
     }
 
     async nextPage() {
+        if (this.isswitching) return;
+        this.isswitching = true;
         this.curr = this.curr === this.max ? 0 : this.curr + 1;
         await this.updatePageClassName();
+        this.isswitching = false;
     }
 
     async lastPage() {
+        if (this.isswitching) return;
+        this.isswitching = true;
         this.curr = this.curr === 0 ? this.max : this.curr - 1;
         await this.updatePageClassName();
+        this.isswitching = false;
     }
 
     async switchTo(target: number) {
@@ -80,10 +86,11 @@ class PageShowPlayer {
         }
         while (target !== this.curr) {
             if (this.upordown(target)) {
-                await this.nextPage();
+                this.nextPage();
             } else {
-                await this.lastPage();
+                this.lastPage();
             }
+            await waitTransitionEnd(this.pagepicker);
         }
     }
 
@@ -96,22 +103,17 @@ class PageShowPlayer {
         }
     }
 
-    async scrollLikeHandler(deltaY: number) {
-        if (this.isswitching) return;
-        this.isswitching = true;
+    private async scrollLikeHandler(deltaY: number) {
         if (deltaY > 5) {
             await this.nextPage();
         } else if (deltaY < -5) {
             await this.lastPage();
         }
-        this.isswitching = false;
     }
 
-    async pickerClickHandler(e: MouseEvent) {
-        if (e.target instanceof HTMLDivElement && e.target.parentElement === this.pagepicker && !this.isswitching) {
-            this.isswitching = true;
+    private async pickerClickHandler(e: MouseEvent) {
+        if (e.target instanceof HTMLDivElement && e.target.parentElement === this.pagepicker) {
             await this.switchTo(parseInt(e.target.getAttribute("gpid") || "NaN"));
-            this.isswitching = false;
         }
     }
 
@@ -160,14 +162,8 @@ window.addEventListener("DOMContentLoaded", () => {
     const homeshowcontainer = document.querySelector("div#home-full-show-container");
     if (homeshowcontainer instanceof HTMLDivElement) {
         const psp = new PageShowPlayer(homeshowcontainer);
-        (async () => {
-            while (true) {
-                await new Promise((resolve) => window.setTimeout(resolve, 6e3));
-                if (psp.isswitching) continue;
-                psp.isswitching = true;
-                psp.nextPage();
-                psp.isswitching = false;
-            }
-        })();
+        window.setInterval(() => {
+            if (!psp.isswitching) psp.nextPage();
+        }, 6e3);
     }
 });
