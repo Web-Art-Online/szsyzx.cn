@@ -33,6 +33,10 @@ a:hover {
     color: var(--luotianyi-highlight);
 }
 
+code {
+    font-family: 'JetBrainsMono', 'Courier New', Courier, monospace;
+}
+
 /* nav */
 
 img[alt="logo"] {
@@ -48,11 +52,17 @@ nav#home-nav-container {
     top: 0;
     left: 0;
     right: 0;
-    display: flex;
-    justify-content: space-between;
     overflow: hidden;
     height: 64px;
     z-index: 1;
+}
+
+nav#home-nav-container > #home-nav-left {
+    left: 0;
+}
+
+nav#home-nav-container > #home-nav-right {
+    right: 0;
 }
 
 #home-nav-container > * {
@@ -62,7 +72,7 @@ nav#home-nav-container {
     display: flex;
     align-items: center;
     margin: 0;
-    position: relative;
+    position: absolute;
 }
 
 #home-nav-container > *::after {
@@ -91,7 +101,7 @@ nav#home-nav-container {
     color: var(--luotianyi);
 }
 
-@media (max-width: 420px) {
+@media (max-width: 494px) {
     #home-nav-container h1 {
         display: none;
     }
@@ -166,12 +176,14 @@ footer > *:last-child::after {
     position: absolute;
     z-index: -1;
     transition-property: height, transform;
-    transition-duration: 400ms;
+    transition-duration: 500ms;
     transition-timing-function: linear;
     top: 0;
     left: 0;
     right: 0;
     overflow: hidden;
+    display: none;
+    background-color: var(--phi-bg-black-trans);
 }
 
 .page-shower > * > * {
@@ -185,25 +197,32 @@ footer > *:last-child::after {
     position: absolute;
 }
 
-.page-shower-hide {
-    display: none;
+.page-shower-this {
+    display: block;
 }
 
 .page-shower-next {
     transform: translateY(60px);
     z-index: -2;
+    display: block;
 }
 
 .page-shower-last {
     height: 60px;
     transform: translateY(-60px);
     z-index: 0;
+    display: block;
 }
 
 .page-shower-content {
     text-align: center;
     color: var(--phi-text-white);
-    padding: 64px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: xxx-large;
+    line-height: 100%;
+    text-shadow: var(--phi-box-shadow);
 }
 
 .page-picker {
@@ -237,7 +256,7 @@ footer > *:last-child::after {
     background-color: var(--phi-text-white);
     transform: var(--skew-n);
     box-shadow: var(--phi-box-shadow);
-    transition: transform 400ms linear;
+    transition: transform 500ms linear;
 }
 
 .page-picker-this {
