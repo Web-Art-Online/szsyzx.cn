@@ -1,6 +1,6 @@
 /*
 * MIT License
-* (c) 2024 Web-Art-Online
+* (c) 2024-2025 Web-Art-Online
 */
 
 class PageShowPlayer {
@@ -141,23 +141,7 @@ function touchSwipeListener(elem: HTMLElement, cb: (deltaY: number) => void) {
     });
 }
 
-function extraStyles() {
-    const style = document.createElement("style");
-    document.head.append(style);
-    const fn = () => {
-        style.innerHTML = `
-            #home-full-show-container > .page-shower > * > * {
-                height: ${window.innerHeight}px;
-            }
-        `.replace(/\s+/g, " ");
-    };
-    window.addEventListener("resize", fn);
-    fn();
-}
-
 window.addEventListener("DOMContentLoaded", () => {
-    // extra styles
-    extraStyles();
     // home show
     const homeshowcontainer = document.querySelector("div#home-full-show-container");
     if (homeshowcontainer instanceof HTMLDivElement) {
