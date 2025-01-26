@@ -1,6 +1,6 @@
 # output
 *.js
-dist/
+*.map
 
 # vscode
 .vscode/
