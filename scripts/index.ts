@@ -120,12 +120,8 @@ class PageShowPlayer {
 }
 
 async function waitTransitionEnd(elem: HTMLElement) {
-    return await new Promise<void>((resolve) => {
-        const fn = () => {
-            elem.removeEventListener("transitionend", fn);
-            resolve();
-        };
-        elem.addEventListener("transitionend", fn);
+    return await new Promise((resolve) => {
+        elem.addEventListener("transitionend", resolve, { once: true });
     });
 }
 
