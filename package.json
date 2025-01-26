@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "sass": "^1.83.4",
     "typescript": "^5.6.3"
   },
   "name": "web-art-online.github.io",
@@ -7,8 +8,8 @@
   "repository": "https://github.com/Web-Art-Online/web-art-online.github.io.git",
   "license": "MIT",
   "scripts": {
-    "tsc": "tsc -w",
+    "dev": "tsc -w & sass -w styles",
     "server": "python3 -m http.server",
-    "build": "tsc"
+    "build": "tsc && sass styles"
   }
 }
