@@ -12,6 +12,18 @@ $luotianyi-highlight: #99ffff;
 $skew: skew(18.43494882292201deg); // tan-1(1/3)
 $skew-n: skew(-18.43494882292201deg);
 
+@mixin backdrop-filter($filters...) {
+  -webkit-backdrop-filter: $filters;
+  backdrop-filter: $filters;
+}
+
+@mixin transform($funcs...) {
+  -webkit-transform: $funcs;
+  -moz-transform: $funcs;
+  -o-transform: $funcs;
+  transform: $funcs;
+}
+
 html {
   max-width: 100vw;
   overflow-x: hidden;
@@ -52,7 +64,7 @@ nav#home-nav-container {
   height: 64px;
   z-index: 1;
   img[alt="logo"] {
-    transform: scale(.9);
+    @include transform(scale(.9));
     filter: invert(1);
     width: 48px;
     height: 48px;
@@ -75,13 +87,13 @@ nav#home-nav-container {
     &::after {
       content: "";
       background-color: $phi-bg-black;
-      backdrop-filter: blur(1px);
+      @include backdrop-filter(blur(1px));
       position: absolute;
       width: 100%;
       height: 100%;
       box-shadow: $phi-box-shadow;
       padding: 0 8px;
-      transform: translateX(-8px) $skew-n;
+      @include transform(translateX(-8px) $skew-n);
     }
     & > * {
       margin: 0 8px;
@@ -118,7 +130,7 @@ footer {
   font-size: 14px;
   padding: 4px;
   background-color: $phi-bg-black-trans;
-  backdrop-filter: blur(1px);
+  @include backdrop-filter(blur(1px));
   color: $phi-text-white;
   display: flex;
   justify-content: center;
@@ -196,14 +208,14 @@ footer {
 }
 
 .page-shower-next {
-  transform: translateY(60px);
+  @include transform(translateY(60px));
   z-index: -2;
   display: block;
 }
 
 .page-shower-last {
   height: 60px;
-  transform: translateY(-60px);
+  @include transform(translateY(-60px));
   z-index: 0;
   display: block;
 }
@@ -240,12 +252,12 @@ footer {
     height: 8px;
     margin: 8px;
     background-color: $phi-text-white;
-    transform: $skew-n;
+    @include transform($skew-n);
     box-shadow: $phi-box-shadow;
     transition: transform 500ms linear;
   }
 }
 
 .page-picker-this {
-  transform: $skew-n scale(1.2);
+  @include transform($skew-n scale(1.2));
 }

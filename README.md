@@ -20,7 +20,7 @@ cd web-art-online.github.io
 # build
 yarn && yarn build
 # check output
-ls -al dist
+ls -al
 ```
 
 ## License
