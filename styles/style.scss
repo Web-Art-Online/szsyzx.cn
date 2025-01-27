@@ -45,11 +45,12 @@ html {
 a {
   text-decoration: none;
   color: $luotianyi;
-  background-image: linear-gradient(to right, $luotianyi, $luotianyi-highlight);
-  background-repeat: no-repeat;
-  background-size: 0 1px;
-  background-position-x: right;
-  background-position-y: bottom;
+  background: {
+    image: linear-gradient(to right, $luotianyi, $luotianyi-highlight);
+    repeat: no-repeat;
+    size: 0 1px;
+    position: right bottom;
+  }
   transition: background-size 167ms linear;
   &:hover {
     color: $luotianyi-highlight;
@@ -120,11 +121,10 @@ nav#home-nav-container {
       background-size: 100% 2px;
     }
   }
-}
-
-@media (max-width: 486px) {
-  #home-nav-container h1 {
+  @media (max-width: 486px) {
+    h1 {
       display: none;
+    }
   }
 }
 
@@ -190,9 +190,11 @@ footer {
     height: 100%;
     position: absolute;
     z-index: -1;
-    transition-property: height, transform;
-    transition-duration: 500ms;
-    transition-timing-function: linear;
+    transition: {
+      property: height, transform;
+      duration: 500ms;
+      timing-function: linear;
+    }
     top: 0;
     left: 0;
     right: 0;
@@ -207,7 +209,6 @@ footer {
     }
     & > img {
       object-fit: cover;
-      position: absolute;
     }
   }
 }
@@ -265,8 +266,7 @@ footer {
     @include box-shadow;
     transition: transform 500ms linear;
   }
-}
-
-.page-picker-this {
-  @include transform($skew-n scale(1.2));
+  &-this {
+    @include transform($skew-n scale(1.2));
+  }
 }
