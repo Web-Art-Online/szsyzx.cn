@@ -1,6 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
 
+@use 'sass:list';
+
 /* public */
 
 $phi-bg-black: #23292ecc;
@@ -22,6 +24,13 @@ $skew-n: skew(-18.43494882292201deg);
   -moz-transform: $funcs;
   -o-transform: $funcs;
   transform: $funcs;
+}
+
+@mixin box-shadow($shadows...) {
+  $shadows: if(list.length($shadows) == 0, $phi-box-shadow, $shadows);
+  -webkit-box-shadow: $shadows;
+  -moz-box-shadow: $shadows;
+  box-shadow: $shadows;
 }
 
 html {
@@ -91,7 +100,7 @@ nav#home-nav-container {
       position: absolute;
       width: 100%;
       height: 100%;
-      box-shadow: $phi-box-shadow;
+      @include box-shadow;
       padding: 0 8px;
       @include transform(translateX(-8px) $skew-n);
     }
@@ -136,7 +145,7 @@ footer {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  box-shadow: $phi-box-shadow;
+  @include box-shadow;
   & > a {
     color: inherit;
     &:hover {
@@ -253,7 +262,7 @@ footer {
     margin: 8px;
     background-color: $phi-text-white;
     @include transform($skew-n);
-    box-shadow: $phi-box-shadow;
+    @include box-shadow;
     transition: transform 500ms linear;
   }
 }
