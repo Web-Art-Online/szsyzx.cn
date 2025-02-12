@@ -1,4 +1,5 @@
 # output
+dist/ 
 *.js
 *.css
 *.map
@@ -11,6 +12,9 @@
 
 # node
 node_modules/
+
+# webpack
+!webpack.config.js
 
 # ???
 .htaccess

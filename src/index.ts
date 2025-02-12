@@ -3,6 +3,8 @@
 * (c) 2024-2025 Web-Art-Online
 */
 
+import './css/style.scss';
+
 class PageShowPlayer {
 
   private showcontainer: HTMLDivElement;
@@ -30,7 +32,7 @@ class PageShowPlayer {
     } else {
       this.pageshower = ps;
     }
-    for (const page of this.pageshower.children) {
+    for (const page of Array.from(this.pageshower.children)) {
       const gpid = parseInt(page.getAttribute("gpid") || "NaN");
       if (gpid > this.max) this.max = gpid;
       const pk = document.createElement("div");
@@ -44,7 +46,7 @@ class PageShowPlayer {
   }
 
   async updatePageClassName() {
-    for (const page of this.pageshower.children) {
+    for (const page of Array.from(this.pageshower.children)) {
       const gpid = parseInt(page.getAttribute("gpid") || "NaN");
       if (gpid === this.curr) {
         page.className = "page-shower-this";
@@ -56,7 +58,7 @@ class PageShowPlayer {
         page.className = "page-shower-hide";
       }
     }
-    for (const picker of this.pagepicker.children) {
+    for (const picker of Array.from(this.pagepicker.children)) {
       picker.className = parseInt(picker.getAttribute("gpid") || "NaN") === this.curr ? "page-picker-this" : "page-picker-hide";
     }
     await waitTransitionEnd(this.pageshower);

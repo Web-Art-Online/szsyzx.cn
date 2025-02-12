@@ -1,15 +1,20 @@
 {
   "devDependencies": {
-    "sass": "^1.83.4",
-    "typescript": "^5.6.3"
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.84.0",
+    "sass-loader": "^16.0.4",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   },
   "name": "web-art-online.github.io",
   "version": "0.0.1",
   "repository": "https://github.com/Web-Art-Online/web-art-online.github.io.git",
   "license": "MIT",
   "scripts": {
-    "dev": "tsc -w & sass -w styles",
-    "server": "python3 -m http.server",
-    "build": "tsc && sass styles"
+    "build": "webpack"
   }
 }
