@@ -16,5 +16,6 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack"
-  }
+  },
+  "type": "module"
 }
