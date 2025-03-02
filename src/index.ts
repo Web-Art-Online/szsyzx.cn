@@ -1,6 +1,7 @@
-/*
-* MIT License
-* (c) 2024-2025 Web-Art-Online
+/**
+* @license
+* Copyright 2024-2025 Web Art Online
+* SPDX-License-Identifier: MIT
 */
 
 import './css/style.scss';
