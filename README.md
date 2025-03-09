@@ -2,9 +2,7 @@
 
 ## Demo
 
-- Development: <https://web-art-online.github.io/>
-
-- Production: <https://szsyzx.cn/>
+- <https://szsyzx.cn/>
 
 ## Technologies
 
@@ -20,7 +18,7 @@ cd web-art-online.github.io
 # build
 yarn && yarn build
 # check output
-ls -al
+ls -al dist
 ```
 
 ## License

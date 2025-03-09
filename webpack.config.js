@@ -6,6 +6,9 @@ import CopyPlugin from 'copy-webpack-plugin';
 export default {
   entry: './src/index.ts',
   devtool: 'source-map',
+  devServer: {
+    port: 8000
+  },
   output: {
     filename: 'main.js',
     path: path.resolve(import.meta.dirname, 'dist'),
