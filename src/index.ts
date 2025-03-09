@@ -134,6 +134,7 @@ function touchSwipeListener(elem: HTMLElement, cb: (deltaY: number) => void) {
     startY = e.touches[0].clientY;
   });
   elem.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 1) return;
     cb(startY - e.touches[0].clientY);
     startY = e.touches[0].clientY;
     e.preventDefault();
@@ -147,6 +148,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const psp = new PageShowPlayer(homeshowcontainer);
     window.setInterval(() => {
       if (!psp.isswitching) psp.nextPage();
-    }, 6e3);
+    }, 1e4);
   }
 });
