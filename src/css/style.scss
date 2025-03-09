@@ -2,6 +2,7 @@
 /* CSS Document */
 
 @use 'sass:list';
+@use 'sass:math';
 
 /* public */
 
@@ -11,8 +12,8 @@ $phi-text-white: #ffffffee;
 $phi-box-shadow: 5px 5px 5px #0004;
 $luotianyi: #66ccff;
 $luotianyi-highlight: #99ffff;
-$skew: skew(18.43494882292201deg); // tan-1(1/3)
-$skew-n: skew(-18.43494882292201deg);
+$skew: skew(math.atan(math.div(1, 3)));
+$skew-n: skew(math.atan(math.div(-1, 3)));
 
 @mixin backdrop-filter($filters...) {
   -webkit-backdrop-filter: $filters;
@@ -42,6 +43,10 @@ html {
   line-height: 100%;
 }
 
+body {
+  margin: 0;
+}
+
 a {
   text-decoration: none;
   color: $luotianyi;
@@ -67,11 +72,9 @@ code {
 
 nav#home-nav-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   overflow: hidden;
-  height: 64px;
+  height: 60px;
+  width: 100%;
   z-index: 1;
   img[alt="logo"] {
     @include transform(scale(.9));
@@ -80,13 +83,13 @@ nav#home-nav-container {
     height: 48px;
     margin-right: 0;
   }
-  & > #home-nav-left {
+  > #home-nav-left {
     left: 0;
   }
-  & > #home-nav-right {
+  > #home-nav-right {
     right: 0;
   }
-  & > * {
+  > * {
     height: 48px;
     line-height: 100%;
     color: $phi-text-white;
@@ -104,11 +107,11 @@ nav#home-nav-container {
       @include box-shadow;
       padding: 0 8px;
       @include transform(translateX(-8px) $skew-n);
+      z-index: -1;
     }
-    & > * {
+    > * {
       margin: 0 8px;
       white-space: nowrap;
-      z-index: 1;
     }
   }
   a {
@@ -169,65 +172,52 @@ footer {
 
 #home-full-show-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  height: 100%;
+  width: 100%;
   background-color: $phi-bg-black-trans;
 }
 
 .page-shower {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  & > * {
+  width: 100%;
+  height: 100%;
+  > * {
     width: 100%;
     height: 100%;
     position: absolute;
-    z-index: -1;
+    z-index: 1;
     transition: {
       property: height, transform;
       duration: 500ms;
       timing-function: linear;
     }
-    top: 0;
-    left: 0;
-    right: 0;
     overflow: hidden;
-    display: none;
     background-color: $phi-bg-black-trans;
-    & > * {
+    > * {
       position: absolute;
       width: 100vw;
-      height: 100vh;
-      line-height: 1.1;
+      height: 100vh; // fallback
+      height: 100dvh;
     }
-    & > img {
+    > img {
       object-fit: cover;
     }
   }
 }
 
-.page-shower-this {
-  display: block;
+.page-shower-hide {
+  display: none;
 }
 
 .page-shower-next {
   @include transform(translateY(60px));
-  z-index: -2;
-  display: block;
+  z-index: 0;
 }
 
 .page-shower-last {
   height: 60px;
   @include transform(translateY(-60px));
-  z-index: 0;
-  display: block;
+  z-index: 2;
 }
 
 .page-shower-content {
@@ -239,6 +229,10 @@ footer {
   font-size: xxx-large;
   line-height: 100%;
   text-shadow: $phi-box-shadow;
+  * {
+    line-height: 1.2;
+    font-size: initial;
+  }
 }
 
 .page-picker {
@@ -250,14 +244,14 @@ footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  z-index: 3;
   @media (max-width: 640px) {
     right: 32px;
   }
   @media (max-width: 360px) {
     right: 24px;
   }
-  & > * {
+  > * {
     width: 8px;
     height: 8px;
     margin: 8px;
@@ -268,5 +262,29 @@ footer {
   }
   &-this {
     @include transform($skew-n scale(1.2));
+  }
+}
+
+/* Home page Intoduction  */
+
+#main-intro {
+  max-width: 360px;
+  width: calc(100% - 40px);
+  height: 120px;
+  background-color: $phi-bg-black;
+  @include transform($skew-n);
+  @include box-shadow;
+  @include backdrop-filter(blur(1px));
+  display: flex;
+  text-align: initial;
+  > * {
+    @include transform($skew);
+  }
+  > img {
+    filter: invert(1);
+    margin-left: 16px;
+  }
+  > p {
+    margin-right: 16px;
   }
 }
