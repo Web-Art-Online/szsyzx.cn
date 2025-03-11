@@ -148,7 +148,6 @@ footer {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  @include box-shadow;
   & > a {
     color: inherit;
     &:hover {
@@ -271,20 +270,27 @@ footer {
   max-width: 360px;
   width: calc(100% - 40px);
   height: 120px;
-  background-color: $phi-bg-black;
-  @include transform($skew-n);
-  @include box-shadow;
-  @include backdrop-filter(blur(1px));
   display: flex;
   text-align: initial;
-  > * {
-    @include transform($skew);
-  }
+  z-index: 1;
   > img {
     filter: invert(1);
     margin-left: 16px;
   }
   > p {
     margin-right: 16px;
+    overflow: auto;
+  }
+  &::after {
+    content: '';
+    max-width: inherit;
+    width: inherit;
+    height: inherit;
+    background-color: $phi-bg-black;
+    @include box-shadow;
+    @include backdrop-filter(blur(1px));
+    @include transform($skew-n);
+    position: absolute;
+    z-index: -1;
   }
 }
