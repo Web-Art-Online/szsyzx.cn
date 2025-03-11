@@ -148,6 +148,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const psp = new PageShowPlayer(homeshowcontainer);
     window.setInterval(() => {
       if (!psp.isswitching) psp.nextPage();
-    }, 1e4);
+    }, 2e4);
   }
 });
