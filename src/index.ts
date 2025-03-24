@@ -34,10 +34,10 @@ class PageShowPlayer {
       this.pageshower = ps;
     }
     for (const page of Array.from(this.pageshower.children)) {
-      const gpid = parseInt(page.getAttribute("gpid") || "NaN");
-      if (gpid > this.max) this.max = gpid;
+      const tabindex = parseInt(page.getAttribute("tabindex") || "NaN");
+      if (tabindex > this.max) this.max = tabindex;
       const pk = document.createElement("div");
-      pk.setAttribute("gpid", gpid.toString());
+      pk.setAttribute("tabindex", tabindex.toString());
       this.pagepicker.append(pk);
     }
     this.updatePageClassName();
@@ -48,19 +48,19 @@ class PageShowPlayer {
 
   async updatePageClassName() {
     for (const page of Array.from(this.pageshower.children)) {
-      const gpid = parseInt(page.getAttribute("gpid") || "NaN");
-      if (gpid === this.curr) {
+      const tabindex = parseInt(page.getAttribute("tabindex") || "NaN");
+      if (tabindex === this.curr) {
         page.className = "page-shower-this";
-      } else if (gpid === (this.curr === this.max ? 0 : this.curr + 1)) {
+      } else if (tabindex === (this.curr === this.max ? 0 : this.curr + 1)) {
         page.className = "page-shower-next";
-      } else if (gpid === (this.curr === 0 ? this.max : this.curr - 1)) {
+      } else if (tabindex === (this.curr === 0 ? this.max : this.curr - 1)) {
         page.className = "page-shower-last";
       } else {
         page.className = "page-shower-hide";
       }
     }
     for (const picker of Array.from(this.pagepicker.children)) {
-      picker.className = parseInt(picker.getAttribute("gpid") || "NaN") === this.curr ? "page-picker-this" : "page-picker-hide";
+      picker.className = parseInt(picker.getAttribute("tabindex") || "NaN") === this.curr ? "page-picker-this" : "page-picker-hide";
     }
     await waitTransitionEnd(this.pageshower);
   }
@@ -116,7 +116,7 @@ class PageShowPlayer {
 
   private async pickerClickHandler(e: MouseEvent) {
     if (e.target instanceof HTMLDivElement && e.target.parentElement === this.pagepicker) {
-      await this.switchTo(parseInt(e.target.getAttribute("gpid") || "NaN"));
+      await this.switchTo(parseInt(e.target.getAttribute("tabindex") || "NaN"));
     }
   }
 
