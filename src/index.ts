@@ -22,7 +22,7 @@ class PageShowPlayer {
     if (!(pp instanceof HTMLDivElement)) {
       this.pagepicker = document.createElement("div");
       this.pagepicker.className = "page-picker";
-      this,showcontainer.append(this.pagepicker);
+      this.showcontainer.append(this.pagepicker);
     } else {
       this.pagepicker = pp;
       this.pagepicker.innerHTML = "";
