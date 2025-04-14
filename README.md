@@ -1,4 +1,4 @@
-# Web Art Online - Homepage on GitHub
+# Web Art Online Official Website
 
 ## Demo
 
@@ -6,7 +6,7 @@
 
 ## Technologies
 
-- HTML, CSS, TypeScript
+- HTML, Sass, TypeScript
 
 ## Build
 
