@@ -20,13 +20,6 @@ $skew-n: skew(math.atan(math.div(-1, 3)));
   backdrop-filter: $filters;
 }
 
-@mixin transform($funcs...) {
-  -webkit-transform: $funcs;
-  -moz-transform: $funcs;
-  -o-transform: $funcs;
-  transform: $funcs;
-}
-
 @mixin box-shadow($shadows...) {
   $shadows: if(list.length($shadows) == 0, $phi-box-shadow, $shadows);
   -webkit-box-shadow: $shadows;
@@ -77,7 +70,7 @@ nav#home-nav-container {
   width: 100%;
   z-index: 1;
   img[alt="logo"] {
-    @include transform(scale(.9));
+    transform: scale(.9);
     filter: invert(1);
     width: 48px;
     height: 48px;
@@ -106,7 +99,7 @@ nav#home-nav-container {
       height: 100%;
       @include box-shadow;
       padding: 0 8px;
-      @include transform(translateX(-8px) $skew-n);
+      transform: translateX(-8px) $skew-n;
       z-index: -1;
     }
     > * {
@@ -209,13 +202,13 @@ footer {
 }
 
 .page-shower-next {
-  @include transform(translateY(60px));
+  transform: translateY(60px);
   z-index: 0;
 }
 
 .page-shower-last {
   height: 60px;
-  @include transform(translateY(-60px));
+  transform: translateY(-60px);
   z-index: 2;
 }
 
@@ -255,12 +248,12 @@ footer {
     height: 8px;
     margin: 8px;
     background-color: $phi-text-white;
-    @include transform($skew-n);
+    transform: $skew-n;
     @include box-shadow;
     transition: transform 500ms linear;
   }
   &-this {
-    @include transform($skew-n scale(1.2));
+    transform: $skew-n scale(1.2);
   }
 }
 
@@ -289,7 +282,7 @@ footer {
     background-color: $phi-bg-black;
     @include box-shadow;
     @include backdrop-filter(blur(1px));
-    @include transform($skew-n);
+    transform: $skew-n;
     position: absolute;
     z-index: -1;
   }
